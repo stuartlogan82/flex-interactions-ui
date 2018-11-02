@@ -6,10 +6,10 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 module.exports = (env) => {
   const isProduction = env === 'production';
   const CSSExtract = new ExtractTextPlugin('styles.css')
-  const envVars = dotenv.config().parsed;
-  console.log(envVars);
-  const envKeys = Object.keys(envVars).reduce((prev, next) => {
-    prev[`process.env.${next}`] = JSON.stringify(envVars[next]);
+  //const envVars = dotenv.config().parsed;
+  //console.log(envVars);
+  const envKeys = Object.keys(env).reduce((prev, next) => {
+    prev[`process.env.${next}`] = JSON.stringify(env[next]);
     return prev;
   }, {});
   return {

@@ -114,6 +114,7 @@ export default class CustomerInteractions extends React.Component {
           {items.map(item => (
             <VerticalTimelineElement
               className="vertical-timeline-element--work"
+              key={item.date_created}
               date={item.date_created}
               iconStyle={(() => {
                 switch (item.type) {
@@ -147,24 +148,6 @@ export default class CustomerInteractions extends React.Component {
               ) : (
                   ''
                 )}
-              {/* {item.messages
-                ? item.messages.map((message, index) => (
-                    <p
-                      key={index}
-                      style={
-                        index % 2 === 0
-                          ? {
-                              textAlign: 'right',
-                              background: 'rgb(8, 100, 127)',
-                              color: '#fff'
-                            }
-                          : { textAlign: 'left' }
-                      }
-                    >
-                      {message}
-                    </p>
-                  ))
-                : ''} */}
             </VerticalTimelineElement>
           ))}
         </VerticalTimeline>

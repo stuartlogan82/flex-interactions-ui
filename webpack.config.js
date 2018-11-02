@@ -1,9 +1,16 @@
 const path = require('path');
+const webpack = require('webpack');
+const dotenv = require('dotenv');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = (env) => {
   const isProduction = env === 'production';
   const CSSExtract = new ExtractTextPlugin('styles.css')
+  const envVars = dotenv.config().parsed;
+  const envKeys = Object.keys(envVars).reduce((prev, next) => {
+    prev[`process.env.${next}`] = JSON.stringify(envVars[next]);
+    return prev;
+  }, {});
   return {
     entry: './src/app.js',
     output: {
@@ -40,7 +47,8 @@ module.exports = (env) => {
       ]
     },
     plugins: [
-      CSSExtract
+      CSSExtract,
+      new webpack.DefinePlugin(envKeys)
     ],
     devtool: isProduction ? 'source-map' : 'inline-source-map',
     devServer: {

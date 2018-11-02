@@ -34,21 +34,22 @@ export default class CustomerInteractions extends React.Component {
     var phone = url.searchParams.get('phone') || '';
     console.log(phone);
     if (phone) {
+      const headers = new Headers({
+        Accept: 'application/json',
+        'x-api-key': process.env.aws_api_key
+      })
       fetch(
-        'https://k7ia1ytjx9.execute-api.us-east-1.amazonaws.com/dev-interactions/interactions?phone=' +
-          encodeURIComponent(phone),
+        'https://k7ia1ytjx9.execute-api.us-east-1.amazonaws.com/prod/interactions?phone=' +
+        encodeURIComponent(phone),
         {
           //mode: 'no-cors',
           method: 'GET',
-          headers: {
-            Accept: 'application/json'
-          }
+          headers: headers
         }
       )
         .then(res => res.json())
         .then(
           result => {
-            console.log(result);
             this.setState({
               isLoaded: false,
               items: result
@@ -56,32 +57,22 @@ export default class CustomerInteractions extends React.Component {
             this.state.items.forEach(item => {
               if (item.type === 'chat' || item.type === 'sms') {
                 fetch(
-                  'https://k7ia1ytjx9.execute-api.us-east-1.amazonaws.com/dev-with-chat/chats?channelSid=' +
-                    item.chat_channel,
+                  'https://k7ia1ytjx9.execute-api.us-east-1.amazonaws.com/prod/chats?channelSid=' +
+                  item.chat_channel,
                   {
                     //mode: 'no-cors',
                     method: 'GET',
-                    headers: {
-                      Accept: 'application/json'
-                    }
+                    headers: headers
                   }
                 )
                   .then(res => res.json())
                   .then(result => {
-                    console.log(result);
-                    console.log(item);
                     const newItem = item;
                     newItem.messages = result;
                     const existingItems = this.state.items;
                     existingItems.concat(newItem);
-                    console.log(newItem);
                     this.setState({ items: existingItems });
-                    console.log(this.state.items);
                   });
-                //const messages = this.getChat(item.chat_channel);
-                // this.setState(prevState => {
-                //   items: [...prevState, messages];
-                // });
               }
             });
             console.log('BEFORE IS LOADED IS TRUE');
@@ -110,6 +101,7 @@ export default class CustomerInteractions extends React.Component {
 
   render() {
     console.log(this.state);
+
 
     const { error, isLoaded, items } = this.state;
     if (error) {
@@ -153,8 +145,8 @@ export default class CustomerInteractions extends React.Component {
               {item.type === 'chat' || item.type === 'sms' ? (
                 <ChatBubble messages={item.messages} />
               ) : (
-                ''
-              )}
+                  ''
+                )}
               {/* {item.messages
                 ? item.messages.map((message, index) => (
                     <p

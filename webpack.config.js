@@ -7,7 +7,7 @@ module.exports = (env) => {
   const isProduction = env === 'production';
   const CSSExtract = new ExtractTextPlugin('styles.css')
   //const envVars = dotenv.config().parsed;
-  //console.log(envVars);
+  console.log(env);
   const envKeys = Object.keys(env).reduce((prev, next) => {
     prev[`process.env.${next}`] = JSON.stringify(env[next]);
     return prev;

@@ -39,7 +39,7 @@ export default class CustomerInteractions extends React.Component {
         'x-api-key': process.env.aws_api_key
       })
       fetch(
-        'https://k7ia1ytjx9.execute-api.us-east-1.amazonaws.com/prod/interactions?phone=' +
+        'https://k7ia1ytjx9.execute-api.us-east-1.amazonaws.com/dev-with-chat/interactions?phone=' +
         encodeURIComponent(phone),
         {
           //mode: 'no-cors',
@@ -57,7 +57,7 @@ export default class CustomerInteractions extends React.Component {
             this.state.items.forEach(item => {
               if (item.type === 'chat' || item.type === 'sms') {
                 fetch(
-                  'https://k7ia1ytjx9.execute-api.us-east-1.amazonaws.com/prod/chats?channelSid=' +
+                  'https://k7ia1ytjx9.execute-api.us-east-1.amazonaws.com/dev-with-chat/chats?channelSid=' +
                   item.chat_channel,
                   {
                     //mode: 'no-cors',
